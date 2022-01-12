@@ -29,8 +29,6 @@ const App = ({loading, currencyFrom, setData, setLoading}) => {
         <ConverterInput/>
         <PopularCurrency currency={'USD'}/>
         <PopularCurrency currency={'EUR'}/>
-        <PopularCurrency currency={'JPY'}/>
-        <PopularCurrency currency={'KRW'}/>
       </>
     } else {
       return <div>Загрузка...</div>

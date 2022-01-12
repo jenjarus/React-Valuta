@@ -25,7 +25,7 @@ const Switcher = ({currencyFrom, currencyTo, setCurrencyFrom, setCurrencyTo}) =>
     };
 
     return (
-        <div className="line">
+        <div className="line line_conversion">
             <select value={currencyFrom} onChange={setCurrency('from')}>
                 <SwitcherOption />
             </select>

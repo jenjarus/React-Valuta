@@ -88,6 +88,20 @@ main {
       @include flex();
       margin: 10px 0;
     }
+    @media screen and (max-width: 500px) {
+      .line_conversion {
+        flex-direction: column;
+
+        select {
+          width: 100%;
+          max-width: 300px;
+        }
+
+        #swap {
+          margin: 15px;
+        }
+      }
+    }
     .line_center {
       justify-content: center;
     }
