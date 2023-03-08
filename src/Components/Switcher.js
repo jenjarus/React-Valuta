@@ -1,52 +1,46 @@
 import React from "react";
 import SwitcherOption from "./SwitcherOption";
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setCurrencyFrom, setCurrencyTo} from "../actions";
 
-const Switcher = ({currencyFrom, currencyTo, setCurrencyFrom, setCurrencyTo}) => {
+const Switcher = () => {
+    const dispatch = useDispatch();
+    const currencyTo = useSelector((store) => store.currencyTo);
+    const currencyFrom = useSelector((store) => store.currencyFrom);
+
     const swap = () => {
-        const swaps = currencyFrom;
-        setCurrencyFrom(currencyTo);
-        setCurrencyTo(swaps);
+        dispatch(setCurrencyFrom(currencyTo));
+        dispatch(setCurrencyTo(currencyFrom));
     };
 
     const setCurrency = (select) => {
-        if(select === 'from') {
-            return function(e) {
-                setCurrencyFrom(e.target.value);
-            }
-        } else if (select === 'to') {
-            return function(e) {
-                setCurrencyTo(e.target.value);
-            }
-        } else {
-            console.log('Упс...');
+        switch (select) {
+            case 'from':
+                return function (e) {
+                    dispatch(setCurrencyFrom(e.target.value));
+                };
+            case 'to':
+                return function (e) {
+                    dispatch(setCurrencyTo(e.target.value));
+                };
+            default:
+                console.log('Упс...');
+                break;
         }
     };
 
     return (
         <div className="line line_conversion">
             <select value={currencyFrom} onChange={setCurrency('from')}>
-                <SwitcherOption />
+                <SwitcherOption/>
             </select>
-            <button id="swap" onClick={swap}></button>
+            <button id="swap" onClick={swap}/>
             <select value={currencyTo} onChange={setCurrency('to')}>
-                <SwitcherOption />
+                <SwitcherOption/>
             </select>
         </div>
     );
 };
 
-function mapStateToProps(state) {
-    return {
-        currencyFrom: state.currencyFrom,
-        currencyTo: state.currencyTo,
-    }
-}
-const mapDipatchToProps = {
-    setCurrencyFrom,
-    setCurrencyTo
-};
-
-export default connect(mapStateToProps, mapDipatchToProps)(Switcher)
+export default Switcher;
 

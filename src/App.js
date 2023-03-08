@@ -1,78 +1,69 @@
-import React, {useEffect} from 'react';
-import ConverterRate from './Components/ConverterRate'
-import ConverterInput from './Components/ConverterInput'
-import Switcher from './Components/Switcher'
-import PopularCurrency from './Components/PopularCurrency'
-import './styles/reset.css'
-import './styles/base.scss'
-import {connect} from "react-redux";
-import {setData, setLoading} from './actions'
+import React, {useEffect, useState} from 'react';
+import ConverterRate from './Components/ConverterRate';
+import ConverterInput from './Components/ConverterInput';
+import Switcher from './Components/Switcher';
+import PopularCurrency from './Components/PopularCurrency';
+import './styles/reset.css';
+import './styles/base.scss';
+import {useDispatch, useSelector} from "react-redux";
+import {setData} from './actions';
 
-const App = ({loading, currencyFrom, setData, setLoading}) => {
-  const api = async () => {
-    const api_url = await fetch(`https://api.exchangerate-api.com/v4/latest/${currencyFrom}`);
-    const data = await api_url.json();
+const App = () => {
+    const dispatch = useDispatch();
+    const currencyFrom = useSelector((store) => store.currencyFrom);
+    const [loading, setLoading] = useState(false);
 
-    setData(data);
-    setLoading(true);
-  };
+    const api = async () => {
+        const api_url = await fetch(`https://api.exchangerate-api.com/v4/latest/${currencyFrom}`);
+        const data = await api_url.json();
 
-  useEffect(() => {
-    api();
-  }, [currencyFrom, loading]);
+        dispatch(setData(data));
+        setLoading(true);
+    };
 
-  const abc = () => {
-    if(loading) {
-      return <>
-        <ConverterRate/>
-        <Switcher/>
-        <ConverterInput/>
-        <PopularCurrency currency={'USD'}/>
-        <PopularCurrency currency={'EUR'}/>
-      </>
-    } else {
-      return <div>Загрузка...</div>
-    }
-  };
+    useEffect(() => {
+        api();
+    }, [currencyFrom, loading]);
 
-  return (
-    <>
-      <header>
-        <div className="container">
-          <div className="header">
-            <div className="title">Калькулятор <span className="red">валюты</span></div>
-          </div>
-        </div>
-      </header>
-      <main>
-        <article className="container">
-          <div className="form_box">
-            {abc()}
-          </div>
-        </article>
-      </main>
-      <footer>
-        <div className="container">
-          <div className="footer">
-            <div className="copy">©Jenjarus <span className="year">2077</span></div>
-          </div>
-        </div>
-      </footer>
-    </>
-  );
+    const RenderContent = () => {
+        if (loading) {
+            return <>
+                <ConverterRate/>
+                <Switcher/>
+                <ConverterInput/>
+                <PopularCurrency currency={'USD'}/>
+                <PopularCurrency currency={'EUR'}/>
+            </>
+        } else {
+            return <div>Загрузка...</div>
+        }
+    };
+
+    return (
+        <>
+            <header>
+                <div className="container">
+                    <div className="header">
+                        <div className="title">Конвертер <span className="red">валют</span></div>
+                    </div>
+                </div>
+            </header>
+            <main>
+                <article className="container">
+                    <div className="form_box">
+                        <RenderContent/>
+                    </div>
+                </article>
+            </main>
+            <footer>
+                <div className="container">
+                    <div className="footer">
+                        <div className="copy">©Jenjarus <span className="year">2077</span></div>
+                    </div>
+                </div>
+            </footer>
+        </>
+    );
 };
 
-
-function mapStateToProps(state) {
-  return {
-    loading: state.loading,
-    currencyFrom: state.currencyFrom,
-  }
-}
-
-const mapDipatchToProps = {
-  setData,
-  setLoading,
-};
-
-export default connect(mapStateToProps, mapDipatchToProps)(App)
+export default App;

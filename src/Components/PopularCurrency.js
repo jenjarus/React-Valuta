@@ -1,26 +1,22 @@
-import React from "react";
-import {arrFullName, arrSymbol} from '../array_currency'
-import {connect} from "react-redux";
+import React, {useEffect, useState} from "react";
+import {arrFullName, arrSymbol} from '../array_currency';
+import {useSelector} from "react-redux";
 
-const PopularCurrency = ({currency, amount, arrRate}) => {
-    const value = () => {
-        const value = (amount * arrRate[currency]).toFixed(2);
-        return value;
-    };
+const PopularCurrency = ({currency}) => {
+    const amount = useSelector((store) => store.amount);
+    const arrRate = useSelector((store) => store.arrRate);
+    const [value, setValue] = useState(0);
+
+    useEffect(() => {
+        setValue(Number((amount * arrRate[currency])).toLocaleString('ru-RU', {minimumFractionDigits: 2}));
+    }, [amount, arrRate]);
 
     return (
         <div className="line">
             <span className="text">{arrFullName[currency]}</span>
-            <span className="value">{value()} {arrSymbol[currency] ? arrSymbol[currency]: currency}</span>
+            <span className="value">{value} {arrSymbol[currency] ? arrSymbol[currency] : currency}</span>
         </div>
     );
 };
 
-function mapStateToProps(state) {
-    return {
-        arrRate: state.arrRate,
-        amount: state.amount,
-    }
-}
-
-export default connect(mapStateToProps)(PopularCurrency)
+export default PopularCurrency;

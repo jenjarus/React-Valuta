@@ -22,10 +22,4 @@ export function setAmount(val) {
         amount: val,
     }
 }
-export function setLoading(val) {
-    return {
-        type: 'SET_LOADING',
-        loading: val,
-    }
-}
 

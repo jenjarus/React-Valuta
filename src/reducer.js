@@ -3,7 +3,6 @@ const initialState = {
     currencyTo: 'RUB',
     amount: 100,
     arrRate: {},
-    loading: false,
 };
 
 export default function reducer(state = initialState, action) {
@@ -27,11 +26,6 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 amount: action.amount,
-            };
-        case 'SET_LOADING':
-            return {
-                ...state,
-                loading: action.loading,
             };
         default:
             return state;
